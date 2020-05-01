@@ -305,7 +305,7 @@ namespace FacebookUI
                     if (searchText.Length == 1)
                     {
                         //Search for entries that match first name or last name as the user has only searched for two things
-                        string query = "SELECT userID AS 'User ID', firstName AS 'First Name', lastName AS 'Last Name' FROM users WHERE firstName=@firstName OR lastName=@lastName";
+                        string query = "SELECT userID AS 'User ID', firstName AS 'First Name', lastName AS 'Last Name', currentCity AS 'Current City' FROM users WHERE firstName=@firstName OR lastName=@lastName";
                         if (con.State != System.Data.ConnectionState.Open)
                             await con.OpenAsync();
                         cmd = new MySqlCommand(query, con);
@@ -314,7 +314,7 @@ namespace FacebookUI
                     }
                     else
                     {
-                        string query = "SELECT userID AS 'User ID', firstName AS 'First Name', lastName AS 'Last Name' FROM users WHERE firstName=@firstName AND lastName=@lastName";
+                        string query = "SELECT userID AS 'User ID', firstName AS 'First Name', lastName AS 'Last Name', homeTown AS 'Home Town' FROM users WHERE firstName=@firstName AND lastName=@lastName";
                         if (con.State != System.Data.ConnectionState.Open)
                             await con.OpenAsync();
                         cmd = new MySqlCommand(query, con);
@@ -324,7 +324,7 @@ namespace FacebookUI
                     var reader = await cmd.ExecuteReaderAsync();
                     while (reader.Read())
                     {
-                        result.Add(new String[] { reader.GetString(0), reader.GetString(1), reader.GetString(2) });
+                        result.Add(new String[] { reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3) });
                     };
                     con.Close();
                     return result;

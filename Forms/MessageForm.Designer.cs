@@ -66,7 +66,7 @@
             // sendBtn
             // 
             this.sendBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sendBtn.Location = new System.Drawing.Point(12, 633);
+            this.sendBtn.Location = new System.Drawing.Point(1247, 633);
             this.sendBtn.Name = "sendBtn";
             this.sendBtn.Size = new System.Drawing.Size(94, 39);
             this.sendBtn.TabIndex = 5;
@@ -79,7 +79,7 @@
             this.charLbl.AutoSize = true;
             this.charLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.charLbl.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.charLbl.Location = new System.Drawing.Point(1284, 630);
+            this.charLbl.Location = new System.Drawing.Point(1184, 630);
             this.charLbl.Name = "charLbl";
             this.charLbl.Size = new System.Drawing.Size(57, 20);
             this.charLbl.TabIndex = 6;

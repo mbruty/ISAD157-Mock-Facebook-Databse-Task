@@ -21,6 +21,7 @@ namespace FacebookUI
         private Dictionary<String, String> gender, relationship;
         public EventHandler logOut;
         private FriendsForm friends;
+        private ProfilePicker p;
 
         private bool viewingOwnProfile = true;
         //Logged in as admin
@@ -277,7 +278,7 @@ namespace FacebookUI
             friends.Dispose();
         }
 
-        private void search()
+        private async void search()
         {
             int searchID = 0;
             string searchText = searchTxtBox.Text;
@@ -290,19 +291,29 @@ namespace FacebookUI
             }
             else
             {
-                List<String[]> result = null;
                 String[] searchTerm = searchText.Split(' ');
-                Task.Run(async () =>
+                List<String[]> result = await DataBase.findUserIDByName(searchTerm);
+                if (result.Count == 0)
                 {
-                    result = await DataBase.findUserIDByName(searchTerm);
-                    if (result.Count == 1)
-                    {
-                        this.fillData(int.Parse(result.ElementAt(0)[0]));
-                    }
-                });
+                    MessageBox.Show("No users were found with that name");
+                }
+                else if (result.Count == 1)
+                {
+                    this.fillData(int.Parse(result.ElementAt(0)[0]));
+                }
+                else
+                {
+                    p = new ProfilePicker(result);
+                    p.Show();
+                    p.profilePicked += profilePicked;
+                }
             }
         }
-
+        private void profilePicked(object sender, EventArgs e)
+        {
+            fillData(p.getID());
+            p.Dispose();
+        }
         private void searchBtn_Click(object sender, EventArgs e)
         {
             search();
