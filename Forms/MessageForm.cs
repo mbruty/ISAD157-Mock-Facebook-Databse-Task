@@ -1,4 +1,5 @@
-﻿using MySqlX.XDevAPI.Common;
+﻿using FacebookUI.Forms;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,12 +14,20 @@ namespace FacebookUI
 {
     public partial class MessageForm : Form
     {
-        private int userID, viewID;
-        public MessageForm(int userID, int viewID)
+        protected int userID, viewID;
+        private string viewName;
+
+        public MessageForm()
+        {
+            InitializeComponent();
+        }
+        public MessageForm(int userID, int viewID, string viewName)
         {
             InitializeComponent();
             this.userID = userID;
             this.viewID = viewID;
+            this.viewName = viewName;
+            this.toTxtBox.Text = viewName;
             populateData();
         }
 
@@ -39,7 +48,7 @@ namespace FacebookUI
             messageDGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
-        private void sendBtn_Click(object sender, EventArgs e)
+        protected virtual void sendBtn_Click(object sender, EventArgs e)
         {
             string text = msgTxtBox.Text;
             msgTxtBox.Text = "";
@@ -51,7 +60,7 @@ namespace FacebookUI
             {
                 Task.Run(async () =>
                 {
-                    return await DataBase.sendMessage(text, this.userID, this.viewID);
+                    return await DataBase.sendMessage(text, this.userID, viewID.ToString());
                 }).ContinueWith(async (reult) =>
                 {
                     if (reult.Result)
@@ -74,7 +83,14 @@ namespace FacebookUI
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        virtual protected void multiMsgBtn_Click(object sender, EventArgs e)
+        {
+            MultiMessage m = new MultiMessage(this.userID);
+            m.Show();
+            this.Hide();
+        }
+
+        protected void textBox1_TextChanged(object sender, EventArgs e)
         {
             charLbl.Text = msgTxtBox.TextLength.ToString() + " / 255";
             if(msgTxtBox.TextLength > 255)
