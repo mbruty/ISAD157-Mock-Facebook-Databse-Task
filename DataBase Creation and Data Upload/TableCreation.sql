@@ -56,8 +56,9 @@ CREATE TABLE Students(
 DROP TABLE IF EXISTS Friendships;
 
 CREATE TABLE Friendships(
-	userID_1 INTEGER NOT NULL,
+		userID_1 INTEGER NOT NULL,
     userID_2 INTEGER NOT NULL,
+		isAccepted BOOLEAN NOT NULL,
     PRIMARY KEY (userID_1, userID_2),
     FOREIGN KEY (userID_1) REFERENCES Users(userID),
     FOREIGN KEY (userID_2) REFERENCES Users(userID)
@@ -70,7 +71,8 @@ CREATE TABLE Messages(
     recipientID INTEGER NOT NULL,
     sentTime DATETIME NOT NULL,
     messageText VARCHAR(255),
-    PRIMARY KEY (senderID, sentTime),
+		isRead BOOLEAN NOT NULL,
+    PRIMARY KEY (recipientID, sentTime),
     FOREIGN KEY (senderID) REFERENCES Users(userID),
     FOREIGN KEY (recipientID) REFERENCES Users(userID)
 );
