@@ -11,6 +11,7 @@ using System.Windows.Forms.VisualStyles;
 using System.Text.RegularExpressions;
 using System.Data.Common;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace FacebookUI
 {
@@ -252,6 +253,31 @@ namespace FacebookUI
             return false;
         }
 
+        public static async Task<String> getProfiles(string userIDs)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string result = "";
+                    string query = "SELECT firstName, lastName FROM Users WHERE userID IN(" + userIDs + ");";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    DbDataReader reader = await cmd.ExecuteReaderAsync();
+                    while (reader.Read())
+                    {
+                        result += reader.GetString(0) + " " + reader.GetString(1) + ", ";
+                    }
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return null;
+        }
         public static async Task<DataTable> getMessages(int userID, int viewID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -363,22 +389,24 @@ namespace FacebookUI
             return false;
         }
 
-        public static async Task<bool> sendMessage(string text, int userID, int viewID)
+        public static async Task<bool> sendMessage(string text, int userID, string viewID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    string query = "INSERT INTO Messages(senderID, recipientID, sentTime, messageText) VALUES(" +
-                        "(SELECT userID FROM users WHERE userID=@userID)," +
-                        "(SELECT userID FROM users WHERE userID=@viewID)," +
-                        "@time, @text)";
+                    string query = "INSERT INTO Messages(senderID, recipientID, sentTime, messageText) VALUES";
+                    string last = viewID.Split(',').Last();
+                    foreach (string recipient in viewID.Split(',')) 
+                    {
+                        query += "((SELECT userID FROM users WHERE userID=" + userID + "),(SELECT userID FROM users WHERE userID=" + recipient + "), CURRENT_TIMESTAMP(), '" + text +"')";
+                        if (recipient != last)
+                            query += ",";
+                        else
+                            query += ";";
+                    }
                     await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
-                    cmd.Parameters.AddWithValue("@userID", userID);
-                    cmd.Parameters.AddWithValue("@viewID", viewID);
-                    cmd.Parameters.AddWithValue("@time", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@text", Util.EscapeSql(text));
 
                     cmd.ExecuteNonQuery();
                     return true;
