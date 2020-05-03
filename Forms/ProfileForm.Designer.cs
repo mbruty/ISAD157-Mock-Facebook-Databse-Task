@@ -36,11 +36,16 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.uniDGV = new System.Windows.Forms.DataGridView();
             this.messageBtn = new System.Windows.Forms.Button();
+            this.addFriendBtn = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.workplaceDGV = new System.Windows.Forms.DataGridView();
-            this.addFriendBtn = new System.Windows.Forms.Button();
             this.removeFriendBtn = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.relationshipLbl = new System.Windows.Forms.Label();
+            this.genderLbl = new System.Windows.Forms.Label();
+            this.friendsBtn = new System.Windows.Forms.Button();
+            this.numFriendsTxtBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.relationshipTxtBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.currentCityTxtBox = new System.Windows.Forms.TextBox();
@@ -53,12 +58,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.firstNameTxtBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.numFriendsTxtBox = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.friendsBtn = new System.Windows.Forms.Button();
             this.dbConnectedPic = new System.Windows.Forms.PictureBox();
-            this.genderLbl = new System.Windows.Forms.Label();
-            this.relationshipLbl = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -159,6 +159,17 @@
             this.messageBtn.UseVisualStyleBackColor = true;
             this.messageBtn.Click += new System.EventHandler(this.messageBtn_Click);
             // 
+            // addFriendBtn
+            // 
+            this.addFriendBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addFriendBtn.Location = new System.Drawing.Point(15, 28);
+            this.addFriendBtn.Name = "addFriendBtn";
+            this.addFriendBtn.Size = new System.Drawing.Size(160, 39);
+            this.addFriendBtn.TabIndex = 2;
+            this.addFriendBtn.Text = "Add Friend";
+            this.addFriendBtn.UseVisualStyleBackColor = true;
+            this.addFriendBtn.Click += new System.EventHandler(this.addFriendBtn_Click);
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.workplaceDGV);
@@ -177,17 +188,6 @@
             this.workplaceDGV.Size = new System.Drawing.Size(643, 197);
             this.workplaceDGV.TabIndex = 0;
             this.workplaceDGV.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.workplaceDGV_DataBindingComplete);
-            // 
-            // addFriendBtn
-            // 
-            this.addFriendBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addFriendBtn.Location = new System.Drawing.Point(15, 28);
-            this.addFriendBtn.Name = "addFriendBtn";
-            this.addFriendBtn.Size = new System.Drawing.Size(160, 39);
-            this.addFriendBtn.TabIndex = 2;
-            this.addFriendBtn.Text = "Add Friend";
-            this.addFriendBtn.UseVisualStyleBackColor = true;
-            this.addFriendBtn.Click += new System.EventHandler(this.addFriendBtn_Click);
             // 
             // removeFriendBtn
             // 
@@ -225,6 +225,57 @@
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "User Information";
+            // 
+            // relationshipLbl
+            // 
+            this.relationshipLbl.AutoSize = true;
+            this.relationshipLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.relationshipLbl.ForeColor = System.Drawing.Color.Maroon;
+            this.relationshipLbl.Location = new System.Drawing.Point(43, 260);
+            this.relationshipLbl.Name = "relationshipLbl";
+            this.relationshipLbl.Size = new System.Drawing.Size(325, 12);
+            this.relationshipLbl.TabIndex = 25;
+            this.relationshipLbl.Text = "*Relationship Status can only be | Single | Engaged | Married | It\'s Complicated " +
+    "|";
+            // 
+            // genderLbl
+            // 
+            this.genderLbl.AutoSize = true;
+            this.genderLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.genderLbl.ForeColor = System.Drawing.Color.Maroon;
+            this.genderLbl.Location = new System.Drawing.Point(158, 140);
+            this.genderLbl.Name = "genderLbl";
+            this.genderLbl.Size = new System.Drawing.Size(210, 12);
+            this.genderLbl.TabIndex = 24;
+            this.genderLbl.Text = "*Gender can only be | Female | Male | Unspecified |";
+            // 
+            // friendsBtn
+            // 
+            this.friendsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.friendsBtn.Location = new System.Drawing.Point(14, 345);
+            this.friendsBtn.Name = "friendsBtn";
+            this.friendsBtn.Size = new System.Drawing.Size(160, 39);
+            this.friendsBtn.TabIndex = 6;
+            this.friendsBtn.Text = "Show Friends";
+            this.friendsBtn.UseVisualStyleBackColor = true;
+            this.friendsBtn.Click += new System.EventHandler(this.friendsBtn_Click);
+            // 
+            // numFriendsTxtBox
+            // 
+            this.numFriendsTxtBox.Location = new System.Drawing.Point(180, 275);
+            this.numFriendsTxtBox.Name = "numFriendsTxtBox";
+            this.numFriendsTxtBox.ReadOnly = true;
+            this.numFriendsTxtBox.Size = new System.Drawing.Size(188, 29);
+            this.numFriendsTxtBox.TabIndex = 23;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 280);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(168, 24);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "Number of Friends";
             // 
             // relationshipTxtBox
             // 
@@ -330,34 +381,6 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "First Name";
             // 
-            // numFriendsTxtBox
-            // 
-            this.numFriendsTxtBox.Location = new System.Drawing.Point(180, 275);
-            this.numFriendsTxtBox.Name = "numFriendsTxtBox";
-            this.numFriendsTxtBox.ReadOnly = true;
-            this.numFriendsTxtBox.Size = new System.Drawing.Size(188, 29);
-            this.numFriendsTxtBox.TabIndex = 23;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 280);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(168, 24);
-            this.label7.TabIndex = 22;
-            this.label7.Text = "Number of Friends";
-            // 
-            // friendsBtn
-            // 
-            this.friendsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.friendsBtn.Location = new System.Drawing.Point(14, 345);
-            this.friendsBtn.Name = "friendsBtn";
-            this.friendsBtn.Size = new System.Drawing.Size(160, 39);
-            this.friendsBtn.TabIndex = 6;
-            this.friendsBtn.Text = "Show Friends";
-            this.friendsBtn.UseVisualStyleBackColor = true;
-            this.friendsBtn.Click += new System.EventHandler(this.friendsBtn_Click);
-            // 
             // dbConnectedPic
             // 
             this.dbConnectedPic.Image = global::FacebookUI.Properties.Resources.baseline_cached_black_18dp;
@@ -366,29 +389,6 @@
             this.dbConnectedPic.Size = new System.Drawing.Size(35, 33);
             this.dbConnectedPic.TabIndex = 2;
             this.dbConnectedPic.TabStop = false;
-            // 
-            // genderLbl
-            // 
-            this.genderLbl.AutoSize = true;
-            this.genderLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.genderLbl.ForeColor = System.Drawing.Color.Maroon;
-            this.genderLbl.Location = new System.Drawing.Point(158, 140);
-            this.genderLbl.Name = "genderLbl";
-            this.genderLbl.Size = new System.Drawing.Size(210, 12);
-            this.genderLbl.TabIndex = 24;
-            this.genderLbl.Text = "*Gender can only be | Female | Male | Unspecified |";
-            // 
-            // relationshipLbl
-            // 
-            this.relationshipLbl.AutoSize = true;
-            this.relationshipLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.relationshipLbl.ForeColor = System.Drawing.Color.Maroon;
-            this.relationshipLbl.Location = new System.Drawing.Point(43, 260);
-            this.relationshipLbl.Name = "relationshipLbl";
-            this.relationshipLbl.Size = new System.Drawing.Size(325, 12);
-            this.relationshipLbl.TabIndex = 25;
-            this.relationshipLbl.Text = "*Relationship Status can only be | Single | Engaged | Married | It\'s Complicated " +
-    "|";
             // 
             // ProfileForm
             // 

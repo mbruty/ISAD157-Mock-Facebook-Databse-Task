@@ -357,7 +357,7 @@ namespace FacebookUI
 
         private void messageBtn_Click(object sender, EventArgs e)
         {
-            MessageForm mf = new MessageForm(this.userID, this.viewingID);
+            MessageForm mf = new MessageForm(this.userID, this.viewingID, (this.firstNameTxtBox.Text + " " + this.lastNameTxtBox.Text));
             mf.Show();
         }
 
