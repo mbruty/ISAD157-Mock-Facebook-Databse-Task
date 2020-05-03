@@ -187,10 +187,12 @@ namespace FacebookUI
                 {
                     //Get all of the user's 
                     string query = "SELECT users.firstName AS 'First Name', users.lastName AS 'Last Name', users.userID AS 'User ID' FROM users " +
-                        "INNER JOIN friendships ON friendships.userID_2 = users.userID WHERE friendships.userID_1 =" + userID + ";";
+                        "INNER JOIN friendships ON friendships.userID_2 = users.userID WHERE friendships.userID_1=@userID AND isAccepted=@true;";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("userID", userID);
+                    cmd.Parameters.AddWithValue("true", true);
                     MySqlDataAdapter sqlDA = new MySqlDataAdapter(cmd);
                     DataTable uniTable = new DataTable("Friendship Data");
 
@@ -235,8 +237,56 @@ namespace FacebookUI
             {
                 try
                 {
-                    string query = "INSERT INTO friendships(userID_1, userID_2) VALUES ((SELECT userID FROM Users WHERE userID=@friendID), (SELECT userID FROM Users WHERE userID=@userID));" +
-                        "INSERT INTO friendships(userID_1, userID_2) VALUES ((SELECT userID FROM Users WHERE userID=@userID), (SELECT userID FROM Users WHERE userID=@friendID));";
+                    string query = "INSERT INTO friendships(userID_1, userID_2, isAccepted) VALUES ((SELECT userID FROM Users WHERE userID=@userID), (SELECT userID FROM Users WHERE userID=@friendID), @false);";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@friendID", friendID);
+                    cmd.Parameters.AddWithValue("@false", false);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return false;
+        }
+
+        public static async Task<bool> acceptFriend(int userID, int friendID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "INSERT INTO friendships(userID_1, userID_2, isAccepted) VALUES ((SELECT userID FROM Users WHERE userID=@userID), (SELECT userID FROM Users WHERE userID=@friendID), @true);" + 
+                        "UPDATE friendships SET isAccepted=@true WHERE userID_1=@friendID AND userID_2=@userID";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@friendID", friendID);
+                    cmd.Parameters.AddWithValue("@true", true);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return false;
+        }
+
+        public static async Task<bool> rejectFriend(int userID, int friendID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "DELETE FROM friendships WHERE userID_1=@friendID AND userID_2=@userID";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
@@ -253,6 +303,32 @@ namespace FacebookUI
             return false;
         }
 
+        public static async Task<DataTable> getFriendRequests(int userID)
+        {
+            List<String[]> result = new List<String[]>();
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+
+                    string query = "SELECT users.firstName AS 'First Name', users.lastName AS 'Last Name', users.userID AS 'User ID' FROM users " +
+                        "INNER JOIN friendships ON friendships.userID_1 = users.userID WHERE friendships.userID_2 =" + userID + " AND isAccepted =" + false + ";"; 
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    MySqlDataAdapter sqlDA = new MySqlDataAdapter(cmd);
+                    DataTable uniTable = new DataTable("Friendship Data");
+
+                    sqlDA.Fill(uniTable);
+                    return uniTable;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return null;
+        }
         public static async Task<String> getProfiles(string userIDs)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -302,12 +378,12 @@ namespace FacebookUI
                         if(int.Parse(row[0]) == viewID)
                         {
                             dataTable.Rows.Add(row[3], " ");
-                            dataTable.Rows.Add("Recieved at "+ row[2], " ");
+                            dataTable.Rows.Add("Recieved at "+ row[2], " "  + (reader.GetBoolean(4) ? " | Read":" | Un-read"));
                         }
                         else
                         {
                             dataTable.Rows.Add("   ", row[3]);
-                            dataTable.Rows.Add(" ", "Sent at " + row[2]);
+                            dataTable.Rows.Add(" ", "Sent at " + row[2] + (reader.GetBoolean(4) ? " | Read" : " | Un-read"));
                         }
                     }
                     return dataTable;
@@ -319,6 +395,87 @@ namespace FacebookUI
             }
             return null;
         }
+        public async static Task<int> countUnRead(int userID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT COUNT(DISTINCT senderID) FROM messages WHERE recipientID=@userID AND isRead=@false;";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@false", false);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    reader.Read();
+                    return reader.GetInt32(0);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return 0;
+        }
+        public static async Task<int> countFriendRequests(int userID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT COUNT(userID_1) FROM friendships WHERE userID_2 = @userID AND isAccepted = @false;";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@false", false);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    reader.Read();
+                    return reader.GetInt32(0);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return 0;
+        }
+
+        public async static Task<DataTable> getUnreadMessages(int userID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    //Get all of the user's 
+                    string query = "SELECT users.firstName, users.lastName, messages.messageText, messages.senderID FROM messages INNER JOIN users ON messages.senderID = users.userID WHERE messages.recipientID=@userID AND messages.isRead=@false GROUP BY messages.senderID;";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@false", false);
+                    DataTable dataTable = new DataTable("Message Data");
+                    dataTable.Columns.Add("Sender");
+                    dataTable.Columns.Add("Message");
+                    dataTable.Columns.Add("Sender ID");
+                    var reader = await cmd.ExecuteReaderAsync();
+                    while (reader.Read())
+                    {
+                        String rowLeft =  reader.GetString(0) + reader.GetString(1) ;
+                        String rowRight = reader.GetString(2);
+                        dataTable.Rows.Add(rowLeft, rowRight, reader.GetString(3));
+                    }
+                    return dataTable;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return null;
+        }
+
         public static async Task<List<String[]>> findUserIDByName(string[] searchText)
         {
             List<String[]> result = new List<String[]>();
@@ -369,11 +526,12 @@ namespace FacebookUI
             {
                 try
                 {
-                    string query = "SELECT EXISTS(SELECT * FROM friendships WHERE userID_1=@user1 AND userID_2=@user2);";
+                    string query = "SELECT EXISTS(SELECT * FROM friendships WHERE userID_1=@user1 AND userID_2=@user2 AND isAccepted=@true);";
                     //await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@user1", id1); 
                     cmd.Parameters.AddWithValue("@user2", id2);
+                    cmd.Parameters.AddWithValue("@true", true);
 
                     await con.OpenAsync();
                     var reader = cmd.ExecuteReader();
@@ -388,18 +546,18 @@ namespace FacebookUI
             }
             return false;
         }
-
         public static async Task<bool> sendMessage(string text, int userID, string viewID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    string query = "INSERT INTO Messages(senderID, recipientID, sentTime, messageText) VALUES";
+                    string query = "INSERT INTO Messages(senderID, recipientID, sentTime, messageText, isRead) VALUES";
                     string last = viewID.Split(',').Last();
+                    text = Util.EscapeSql(text);
                     foreach (string recipient in viewID.Split(',')) 
                     {
-                        query += "((SELECT userID FROM users WHERE userID=" + userID + "),(SELECT userID FROM users WHERE userID=" + recipient + "), CURRENT_TIMESTAMP(), '" + text +"')";
+                        query += "((SELECT userID FROM users WHERE userID=" + userID + "),(SELECT userID FROM users WHERE userID=" + recipient + "), CURRENT_TIMESTAMP(), '" + text +"',"+false+")";
                         if (recipient != last)
                             query += ",";
                         else
@@ -407,6 +565,32 @@ namespace FacebookUI
                     }
                     await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
+
+                    cmd.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return false;
+        }
+
+        public static async Task<bool> setRead(int userID, int viewID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "UPDATE messages SET isRead=@true WHERE senderID=@viewID AND recipientID=@userID AND isRead=@false";
+                    await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@true", true);
+                    cmd.Parameters.AddWithValue("@false", false);
+                    cmd.Parameters.AddWithValue("@viewID", viewID);
+                    cmd.Parameters.AddWithValue("@userID", userID);
 
                     cmd.ExecuteNonQuery();
                     return true;
