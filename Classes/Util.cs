@@ -51,7 +51,7 @@ namespace FacebookUI
             string result = "";
             foreach(char c in text)
             {
-                if(c != '%' && c != '_' && c != '[' && c != ']' && c != '^' && c != '-' && c != ';')
+                if(c != '%' && c != '_' && c != '[' && c != ']' && c != '^' && c != '-' && c != ';' && c != '\'')
                 {
                     result += c;
                 }
