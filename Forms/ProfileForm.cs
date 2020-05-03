@@ -1,4 +1,5 @@
-﻿using FacebookUI.Properties;
+﻿using FacebookUI.Forms.Message_Forms;
+using FacebookUI.Properties;
 using MySqlX.XDevAPI.Common;
 using Renci.SshNet.Common;
 using System;
@@ -157,6 +158,22 @@ namespace FacebookUI
             {
                 String result = await DataBase.getNumFriends(userID);
                 Util.SetControlPropertyThreadSafe(numFriendsTxtBox, "Text", result);
+            });
+
+            Task.Run(async () =>
+            {
+                return await DataBase.countUnRead(this.userID);
+            }).ContinueWith((result) =>
+            {
+                Util.SetControlPropertyThreadSafe(unReadMsgsTxt, "Text", result.Result.ToString());
+            });
+
+            Task.Run(async () =>
+            {
+                return await DataBase.countFriendRequests(this.userID);
+            }).ContinueWith((result) =>
+            {
+                Util.SetControlPropertyThreadSafe(friendRequestsTxt, "Text", result.Result.ToString());
             });
         }
 
@@ -359,6 +376,18 @@ namespace FacebookUI
         {
             MessageForm mf = new MessageForm(this.userID, this.viewingID, (this.firstNameTxtBox.Text + " " + this.lastNameTxtBox.Text));
             mf.Show();
+        }
+
+        private void viewMessagesBtn_Click(object sender, EventArgs e)
+        {
+            UnreadMessages um = new UnreadMessages(this.userID);
+            um.Show();
+        }
+
+        private void viewFrndRqBtn_Click(object sender, EventArgs e)
+        {
+            FriendRequestForm fr = new FriendRequestForm(this.userID);
+            fr.Show();
         }
 
         private void searchTxtBox_KeyDown(object sender, KeyEventArgs e)
