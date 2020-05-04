@@ -20,6 +20,7 @@ namespace FacebookUI
     public partial class ProfileForm : Form
     {
         private int userID, viewingID;
+        private const int maxInputLength = 25;
         private Dictionary<String, String> gender, relationship;
         public EventHandler logOut;
         private FriendsForm friends;
@@ -40,6 +41,8 @@ namespace FacebookUI
 
             genderLbl.Hide();
             relationshipLbl.Hide();
+
+            Util.SetControlPropertyThreadSafe(maxInputLbl, "Visible", false);
 
         }
 
@@ -411,6 +414,21 @@ namespace FacebookUI
         private void updateInfo(object sender, EventArgs e)
         {
             this.fillData(this.userID);
+        }
+
+        private void checkTxtBoxSize(object sender, EventArgs e)
+        {
+            TextBox txtBox = (TextBox)sender;
+            if (txtBox.TextLength > maxInputLength)
+            {
+                txtBox.BackColor = Color.FromArgb(255, 183, 183);
+                Util.SetControlPropertyThreadSafe(maxInputLbl, "Visible", true);
+            }
+            else
+            {
+                txtBox.BackColor = SystemColors.ControlLightLight;
+                Util.SetControlPropertyThreadSafe(maxInputLbl, "Visible", false);
+            }
         }
 
         private void searchTxtBox_KeyDown(object sender, KeyEventArgs e)
