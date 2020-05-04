@@ -1,4 +1,5 @@
-﻿using FacebookUI.Properties;
+﻿using FacebookUI.Forms;
+using FacebookUI.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,7 @@ namespace FacebookUI
     public partial class LoginForm : Form
     {
         private ProfileForm profile;
+        private CreateProfile cProfile;
         public LoginForm()
         {
             InitializeComponent();
@@ -49,6 +51,31 @@ namespace FacebookUI
             if (e.KeyCode == Keys.Enter)
             {
                 UserLoginBtn_Click(null, null);
+            }
+        }
+
+        private void signUpBtn_Click(object sender, EventArgs e)
+        {
+            cProfile = new CreateProfile();
+            cProfile.Show();
+            cProfile.created += profileCreated;
+        }
+        private void profileCreated(object sender, EventArgs e)
+        {
+            Util.SetControlPropertyThreadSafe(user_ID_txtbox, "Text", cProfile.getUserID().ToString());
+            
+            threadsafeProfileLoad();
+        }
+        private void threadsafeProfileLoad()
+        {
+            if (this.InvokeRequired)
+            {
+                Action action = threadsafeProfileLoad;
+                this.Invoke(action);
+            }
+            else
+            {
+                userLoginBtn.PerformClick();
             }
         }
     }
