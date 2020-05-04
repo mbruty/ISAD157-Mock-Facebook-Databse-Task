@@ -60,6 +60,54 @@ namespace FacebookUI
             return result;
         }
 
+        public static async Task<int> createUserProfile(string[] profile)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "INSERT INTO users(firstName, lastName, gender, homeTown, currentCity, relationshipStatus) VALUES(@firstName, @lastName, @gender, @homeTown, @currentCity, @relationshipStatus);";
+                    string query2 = "SELECT userID FROM users WHERE firstName = @firstName AND lastName = @lastName AND gender = @gender AND homeTown = @homeTown AND currentCity = @currentCity AND relationshipStatus = @relationshipStatus;";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    foreach(string row in profile)
+                    {
+                        if(row.Length > 25)
+                        {
+                            MessageBox.Show("There is an error in your input, please correct it and try again");
+                            return 0;
+                        }
+                    }
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@firstName", profile[0]);
+                    cmd.Parameters.AddWithValue("@lastName", profile[1]);
+                    cmd.Parameters.AddWithValue("@gender", Byte.Parse(profile[2]));
+                    cmd.Parameters.AddWithValue("@homeTown", profile[3]);
+                    cmd.Parameters.AddWithValue("@currentCity", profile[4]);
+                    cmd.Parameters.AddWithValue("@relationshipStatus", Byte.Parse(profile[5]));
+
+                    MySqlCommand cmd2 = new MySqlCommand(query2, con);
+                    cmd2.Parameters.AddWithValue("@firstName", profile[0]);
+                    cmd2.Parameters.AddWithValue("@lastName", profile[1]);
+                    cmd2.Parameters.AddWithValue("@gender", Byte.Parse(profile[2]));
+                    cmd2.Parameters.AddWithValue("@homeTown", profile[3]);
+                    cmd2.Parameters.AddWithValue("@currentCity", profile[4]);
+                    cmd2.Parameters.AddWithValue("@relationshipStatus", Byte.Parse(profile[5]));
+                    await cmd.ExecuteNonQueryAsync();
+
+                    var reader = await cmd2.ExecuteReaderAsync();
+                    reader.Read();
+                    return reader.GetInt32(0);
+
+                }
+                catch (MySqlException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return 0;
+        }
+
         public static async Task<DataTable> getWorkplaces(int ID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -192,6 +240,11 @@ namespace FacebookUI
                     for(int i = 0; i < escapedInfo.Length; i++)
                     {
                         escapedInfo[i] = Util.EscapeSql(info[i]);
+                        if(escapedInfo[i].Length > 25)
+                        {
+                            MessageBox.Show(info[i] + "is longer than the maximum 25 characters");
+                            return false;
+                        }
                     }
                     string query = "UPDATE Users SET firstName=@firstName, lastName=@lastName, gender=@gender,homeTown=@homeTown, currentCity=@currentCity," +
                         " relationshipStatus=@relationshipStatus WHERE userID=@userID";
