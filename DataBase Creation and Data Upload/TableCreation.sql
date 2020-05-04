@@ -3,7 +3,7 @@ SET FOREIGN_KEY_CHECKS=0; -- Disabling so if a table is needed to be deleted, it
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users(
-	userID INTEGER,
+	userID INTEGER AUTO_INCREMENT,
     firstName VARCHAR(25) NOT NULL,
     lastName VARCHAR(25) NOT NULL,
     gender BIT(2) NOT NULL, -- 00 Male, 01 Female, 10 Unspecified
