@@ -32,6 +32,12 @@
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchTxtBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.viewFrndRqBtn = new System.Windows.Forms.Button();
+            this.unReadMsgsTxt = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.viewMessagesBtn = new System.Windows.Forms.Button();
+            this.friendRequestsTxt = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.saveChangesBtn = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.uniDGV = new System.Windows.Forms.DataGridView();
@@ -59,12 +65,8 @@
             this.firstNameTxtBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dbConnectedPic = new System.Windows.Forms.PictureBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.friendRequestsTxt = new System.Windows.Forms.TextBox();
-            this.viewMessagesBtn = new System.Windows.Forms.Button();
-            this.viewFrndRqBtn = new System.Windows.Forms.Button();
-            this.unReadMsgsTxt = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.workplaceAddBtn = new System.Windows.Forms.Button();
+            this.uniAddBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -82,14 +84,14 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1051, 84);
+            this.groupBox1.Size = new System.Drawing.Size(1085, 84);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Search";
             // 
             // searchBtn
             // 
-            this.searchBtn.Location = new System.Drawing.Point(950, 30);
+            this.searchBtn.Location = new System.Drawing.Point(984, 29);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(95, 29);
             this.searchBtn.TabIndex = 1;
@@ -103,12 +105,14 @@
             this.searchTxtBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchTxtBox.Location = new System.Drawing.Point(6, 29);
             this.searchTxtBox.Name = "searchTxtBox";
-            this.searchTxtBox.Size = new System.Drawing.Size(938, 29);
+            this.searchTxtBox.Size = new System.Drawing.Size(972, 29);
             this.searchTxtBox.TabIndex = 0;
             this.searchTxtBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchTxtBox_KeyDown);
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.uniAddBtn);
+            this.groupBox2.Controls.Add(this.workplaceAddBtn);
             this.groupBox2.Controls.Add(this.viewFrndRqBtn);
             this.groupBox2.Controls.Add(this.unReadMsgsTxt);
             this.groupBox2.Controls.Add(this.label9);
@@ -125,10 +129,66 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(16, 102);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1094, 552);
+            this.groupBox2.Size = new System.Drawing.Size(1126, 552);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Profile";
+            // 
+            // viewFrndRqBtn
+            // 
+            this.viewFrndRqBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.viewFrndRqBtn.Location = new System.Drawing.Point(919, 34);
+            this.viewFrndRqBtn.Name = "viewFrndRqBtn";
+            this.viewFrndRqBtn.Size = new System.Drawing.Size(201, 39);
+            this.viewFrndRqBtn.TabIndex = 30;
+            this.viewFrndRqBtn.Text = "View FriendRequests";
+            this.viewFrndRqBtn.UseVisualStyleBackColor = true;
+            this.viewFrndRqBtn.Click += new System.EventHandler(this.viewFrndRqBtn_Click);
+            // 
+            // unReadMsgsTxt
+            // 
+            this.unReadMsgsTxt.Location = new System.Drawing.Point(186, 44);
+            this.unReadMsgsTxt.Name = "unReadMsgsTxt";
+            this.unReadMsgsTxt.ReadOnly = true;
+            this.unReadMsgsTxt.Size = new System.Drawing.Size(78, 29);
+            this.unReadMsgsTxt.TabIndex = 28;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(680, 38);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(149, 24);
+            this.label9.TabIndex = 29;
+            this.label9.Text = "Friend Requests";
+            // 
+            // viewMessagesBtn
+            // 
+            this.viewMessagesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.viewMessagesBtn.Location = new System.Drawing.Point(270, 37);
+            this.viewMessagesBtn.Name = "viewMessagesBtn";
+            this.viewMessagesBtn.Size = new System.Drawing.Size(155, 39);
+            this.viewMessagesBtn.TabIndex = 27;
+            this.viewMessagesBtn.Text = "View Messages";
+            this.viewMessagesBtn.UseVisualStyleBackColor = true;
+            this.viewMessagesBtn.Click += new System.EventHandler(this.viewMessagesBtn_Click);
+            // 
+            // friendRequestsTxt
+            // 
+            this.friendRequestsTxt.Location = new System.Drawing.Point(835, 38);
+            this.friendRequestsTxt.Name = "friendRequestsTxt";
+            this.friendRequestsTxt.ReadOnly = true;
+            this.friendRequestsTxt.Size = new System.Drawing.Size(78, 29);
+            this.friendRequestsTxt.TabIndex = 26;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(14, 47);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(166, 24);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "Un-Read Messges";
             // 
             // saveChangesBtn
             // 
@@ -144,7 +204,7 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.uniDGV);
-            this.groupBox5.Location = new System.Drawing.Point(429, 342);
+            this.groupBox5.Location = new System.Drawing.Point(434, 342);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(655, 204);
             this.groupBox5.TabIndex = 2;
@@ -185,7 +245,7 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.workplaceDGV);
-            this.groupBox4.Location = new System.Drawing.Point(429, 100);
+            this.groupBox4.Location = new System.Drawing.Point(434, 100);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(655, 231);
             this.groupBox4.TabIndex = 1;
@@ -396,73 +456,37 @@
             // dbConnectedPic
             // 
             this.dbConnectedPic.Image = global::FacebookUI.Properties.Resources.baseline_cached_black_18dp;
-            this.dbConnectedPic.Location = new System.Drawing.Point(1067, 12);
+            this.dbConnectedPic.Location = new System.Drawing.Point(1107, 12);
             this.dbConnectedPic.Name = "dbConnectedPic";
             this.dbConnectedPic.Size = new System.Drawing.Size(35, 33);
             this.dbConnectedPic.TabIndex = 2;
             this.dbConnectedPic.TabStop = false;
             // 
-            // label8
+            // workplaceAddBtn
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 47);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(166, 24);
-            this.label8.TabIndex = 26;
-            this.label8.Text = "Un-Read Messges";
+            this.workplaceAddBtn.Location = new System.Drawing.Point(1095, 128);
+            this.workplaceAddBtn.Name = "workplaceAddBtn";
+            this.workplaceAddBtn.Size = new System.Drawing.Size(25, 31);
+            this.workplaceAddBtn.TabIndex = 31;
+            this.workplaceAddBtn.Text = "+";
+            this.workplaceAddBtn.UseVisualStyleBackColor = true;
+            this.workplaceAddBtn.Click += new System.EventHandler(this.workplaceAddBtn_Click);
             // 
-            // friendRequestsTxt
+            // uniAddBtn
             // 
-            this.friendRequestsTxt.Location = new System.Drawing.Point(793, 38);
-            this.friendRequestsTxt.Name = "friendRequestsTxt";
-            this.friendRequestsTxt.ReadOnly = true;
-            this.friendRequestsTxt.Size = new System.Drawing.Size(78, 29);
-            this.friendRequestsTxt.TabIndex = 26;
-            // 
-            // viewMessagesBtn
-            // 
-            this.viewMessagesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.viewMessagesBtn.Location = new System.Drawing.Point(270, 37);
-            this.viewMessagesBtn.Name = "viewMessagesBtn";
-            this.viewMessagesBtn.Size = new System.Drawing.Size(155, 39);
-            this.viewMessagesBtn.TabIndex = 27;
-            this.viewMessagesBtn.Text = "View Messages";
-            this.viewMessagesBtn.UseVisualStyleBackColor = true;
-            this.viewMessagesBtn.Click += new System.EventHandler(this.viewMessagesBtn_Click);
-            // 
-            // viewFrndRqBtn
-            // 
-            this.viewFrndRqBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.viewFrndRqBtn.Location = new System.Drawing.Point(877, 34);
-            this.viewFrndRqBtn.Name = "viewFrndRqBtn";
-            this.viewFrndRqBtn.Size = new System.Drawing.Size(201, 39);
-            this.viewFrndRqBtn.TabIndex = 30;
-            this.viewFrndRqBtn.Text = "View FriendRequests";
-            this.viewFrndRqBtn.UseVisualStyleBackColor = true;
-            this.viewFrndRqBtn.Click += new System.EventHandler(this.viewFrndRqBtn_Click);
-            // 
-            // unReadMsgsTxt
-            // 
-            this.unReadMsgsTxt.Location = new System.Drawing.Point(186, 44);
-            this.unReadMsgsTxt.Name = "unReadMsgsTxt";
-            this.unReadMsgsTxt.ReadOnly = true;
-            this.unReadMsgsTxt.Size = new System.Drawing.Size(78, 29);
-            this.unReadMsgsTxt.TabIndex = 28;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(638, 38);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(149, 24);
-            this.label9.TabIndex = 29;
-            this.label9.Text = "Friend Requests";
+            this.uniAddBtn.Location = new System.Drawing.Point(1095, 370);
+            this.uniAddBtn.Name = "uniAddBtn";
+            this.uniAddBtn.Size = new System.Drawing.Size(25, 31);
+            this.uniAddBtn.TabIndex = 32;
+            this.uniAddBtn.Text = "+";
+            this.uniAddBtn.UseVisualStyleBackColor = true;
+            this.uniAddBtn.Click += new System.EventHandler(this.uniAddBtn_Click);
             // 
             // ProfileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1122, 666);
+            this.ClientSize = new System.Drawing.Size(1154, 666);
             this.Controls.Add(this.dbConnectedPic);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -524,5 +548,7 @@
         private System.Windows.Forms.Button viewMessagesBtn;
         private System.Windows.Forms.TextBox friendRequestsTxt;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button uniAddBtn;
+        private System.Windows.Forms.Button workplaceAddBtn;
     }
 }

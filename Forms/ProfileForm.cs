@@ -1,4 +1,5 @@
-﻿using FacebookUI.Forms.Message_Forms;
+﻿using FacebookUI.Forms.Friend_Forms;
+using FacebookUI.Forms.Message_Forms;
 using FacebookUI.Properties;
 using MySqlX.XDevAPI.Common;
 using Renci.SshNet.Common;
@@ -23,7 +24,7 @@ namespace FacebookUI
         public EventHandler logOut;
         private FriendsForm friends;
         private ProfilePicker p;
-
+        private DateEntry de;
         private bool viewingOwnProfile = true;
         //Logged in as admin
         public ProfileForm()
@@ -107,10 +108,11 @@ namespace FacebookUI
             Util.SetControlPropertyThreadSafe(relationshipTxtBox, "BackColor", SystemColors.ControlLightLight);
             Util.SetControlPropertyThreadSafe(genderTxtBox, "BackColor", SystemColors.ControlLightLight);
 
-            removeFriendBtn.Hide();
-            addFriendBtn.Hide();
-            messageBtn.Hide();
-            saveChangesBtn.Show();
+            Util.SetControlPropertyThreadSafe(removeFriendBtn, "Visible", false);
+            Util.SetControlPropertyThreadSafe(addFriendBtn, "Visible", false);
+            Util.SetControlPropertyThreadSafe(messageBtn, "Visible", false);
+            Util.SetControlPropertyThreadSafe(saveChangesBtn, "Visible", true);
+
         }
         private void fillData(int userID)
         {
@@ -388,6 +390,27 @@ namespace FacebookUI
         {
             FriendRequestForm fr = new FriendRequestForm(this.userID);
             fr.Show();
+        }
+
+        private void workplaceAddBtn_Click(object sender, EventArgs e)
+        {
+            if (de != null)
+                de.Dispose();
+            de = new DateEntry("Workplace Name", this.userID);
+            de.Show();
+            de.submitted += updateInfo;
+        }
+        private void uniAddBtn_Click(object sender, EventArgs e)
+        {
+            if (de != null)
+                de.Dispose();
+            de = new DateEntry("University Name", this.userID);
+            de.Show();
+            de.submitted += updateInfo;
+        }
+        private void updateInfo(object sender, EventArgs e)
+        {
+            this.fillData(this.userID);
         }
 
         private void searchTxtBox_KeyDown(object sender, KeyEventArgs e)
