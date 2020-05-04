@@ -32,6 +32,8 @@
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchTxtBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.uniAddBtn = new System.Windows.Forms.Button();
+            this.workplaceAddBtn = new System.Windows.Forms.Button();
             this.viewFrndRqBtn = new System.Windows.Forms.Button();
             this.unReadMsgsTxt = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -65,8 +67,7 @@
             this.firstNameTxtBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dbConnectedPic = new System.Windows.Forms.PictureBox();
-            this.workplaceAddBtn = new System.Windows.Forms.Button();
-            this.uniAddBtn = new System.Windows.Forms.Button();
+            this.maxInputLbl = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -133,6 +134,26 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Profile";
+            // 
+            // uniAddBtn
+            // 
+            this.uniAddBtn.Location = new System.Drawing.Point(1095, 370);
+            this.uniAddBtn.Name = "uniAddBtn";
+            this.uniAddBtn.Size = new System.Drawing.Size(25, 31);
+            this.uniAddBtn.TabIndex = 32;
+            this.uniAddBtn.Text = "+";
+            this.uniAddBtn.UseVisualStyleBackColor = true;
+            this.uniAddBtn.Click += new System.EventHandler(this.uniAddBtn_Click);
+            // 
+            // workplaceAddBtn
+            // 
+            this.workplaceAddBtn.Location = new System.Drawing.Point(1095, 128);
+            this.workplaceAddBtn.Name = "workplaceAddBtn";
+            this.workplaceAddBtn.Size = new System.Drawing.Size(25, 31);
+            this.workplaceAddBtn.TabIndex = 31;
+            this.workplaceAddBtn.Text = "+";
+            this.workplaceAddBtn.UseVisualStyleBackColor = true;
+            this.workplaceAddBtn.Click += new System.EventHandler(this.workplaceAddBtn_Click);
             // 
             // viewFrndRqBtn
             // 
@@ -274,6 +295,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.maxInputLbl);
             this.groupBox3.Controls.Add(this.relationshipLbl);
             this.groupBox3.Controls.Add(this.genderLbl);
             this.groupBox3.Controls.Add(this.friendsBtn);
@@ -303,7 +325,7 @@
             this.relationshipLbl.AutoSize = true;
             this.relationshipLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.relationshipLbl.ForeColor = System.Drawing.Color.Maroon;
-            this.relationshipLbl.Location = new System.Drawing.Point(43, 260);
+            this.relationshipLbl.Location = new System.Drawing.Point(43, 265);
             this.relationshipLbl.Name = "relationshipLbl";
             this.relationshipLbl.Size = new System.Drawing.Size(325, 12);
             this.relationshipLbl.TabIndex = 25;
@@ -315,7 +337,7 @@
             this.genderLbl.AutoSize = true;
             this.genderLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.genderLbl.ForeColor = System.Drawing.Color.Maroon;
-            this.genderLbl.Location = new System.Drawing.Point(158, 140);
+            this.genderLbl.Location = new System.Drawing.Point(158, 145);
             this.genderLbl.Name = "genderLbl";
             this.genderLbl.Size = new System.Drawing.Size(210, 12);
             this.genderLbl.TabIndex = 24;
@@ -334,7 +356,7 @@
             // 
             // numFriendsTxtBox
             // 
-            this.numFriendsTxtBox.Location = new System.Drawing.Point(180, 275);
+            this.numFriendsTxtBox.Location = new System.Drawing.Point(180, 280);
             this.numFriendsTxtBox.Name = "numFriendsTxtBox";
             this.numFriendsTxtBox.ReadOnly = true;
             this.numFriendsTxtBox.Size = new System.Drawing.Size(188, 29);
@@ -343,7 +365,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 280);
+            this.label7.Location = new System.Drawing.Point(6, 285);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(168, 24);
             this.label7.TabIndex = 22;
@@ -351,7 +373,7 @@
             // 
             // relationshipTxtBox
             // 
-            this.relationshipTxtBox.Location = new System.Drawing.Point(180, 228);
+            this.relationshipTxtBox.Location = new System.Drawing.Point(180, 233);
             this.relationshipTxtBox.Name = "relationshipTxtBox";
             this.relationshipTxtBox.ReadOnly = true;
             this.relationshipTxtBox.Size = new System.Drawing.Size(188, 29);
@@ -361,7 +383,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 228);
+            this.label6.Location = new System.Drawing.Point(6, 233);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(168, 24);
             this.label6.TabIndex = 20;
@@ -369,16 +391,17 @@
             // 
             // currentCityTxtBox
             // 
-            this.currentCityTxtBox.Location = new System.Drawing.Point(180, 193);
+            this.currentCityTxtBox.Location = new System.Drawing.Point(180, 198);
             this.currentCityTxtBox.Name = "currentCityTxtBox";
             this.currentCityTxtBox.ReadOnly = true;
             this.currentCityTxtBox.Size = new System.Drawing.Size(188, 29);
             this.currentCityTxtBox.TabIndex = 19;
+            this.currentCityTxtBox.TextChanged += new System.EventHandler(this.checkTxtBoxSize);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(67, 193);
+            this.label5.Location = new System.Drawing.Point(67, 198);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(107, 24);
             this.label5.TabIndex = 18;
@@ -386,16 +409,17 @@
             // 
             // homeTownTxtBox
             // 
-            this.homeTownTxtBox.Location = new System.Drawing.Point(180, 157);
+            this.homeTownTxtBox.Location = new System.Drawing.Point(180, 162);
             this.homeTownTxtBox.Name = "homeTownTxtBox";
             this.homeTownTxtBox.ReadOnly = true;
             this.homeTownTxtBox.Size = new System.Drawing.Size(188, 29);
             this.homeTownTxtBox.TabIndex = 17;
+            this.homeTownTxtBox.TextChanged += new System.EventHandler(this.checkTxtBoxSize);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(59, 157);
+            this.label4.Location = new System.Drawing.Point(59, 162);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(115, 24);
             this.label4.TabIndex = 16;
@@ -403,7 +427,7 @@
             // 
             // genderTxtBox
             // 
-            this.genderTxtBox.Location = new System.Drawing.Point(180, 108);
+            this.genderTxtBox.Location = new System.Drawing.Point(180, 113);
             this.genderTxtBox.Name = "genderTxtBox";
             this.genderTxtBox.ReadOnly = true;
             this.genderTxtBox.Size = new System.Drawing.Size(188, 29);
@@ -413,7 +437,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(100, 108);
+            this.label3.Location = new System.Drawing.Point(100, 113);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(74, 24);
             this.label3.TabIndex = 14;
@@ -421,16 +445,17 @@
             // 
             // lastNameTxtBox
             // 
-            this.lastNameTxtBox.Location = new System.Drawing.Point(180, 73);
+            this.lastNameTxtBox.Location = new System.Drawing.Point(180, 78);
             this.lastNameTxtBox.Name = "lastNameTxtBox";
             this.lastNameTxtBox.ReadOnly = true;
             this.lastNameTxtBox.Size = new System.Drawing.Size(188, 29);
             this.lastNameTxtBox.TabIndex = 13;
+            this.lastNameTxtBox.TextChanged += new System.EventHandler(this.checkTxtBoxSize);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(75, 73);
+            this.label2.Location = new System.Drawing.Point(75, 78);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 24);
             this.label2.TabIndex = 12;
@@ -438,16 +463,17 @@
             // 
             // firstNameTxtBox
             // 
-            this.firstNameTxtBox.Location = new System.Drawing.Point(180, 39);
+            this.firstNameTxtBox.Location = new System.Drawing.Point(180, 44);
             this.firstNameTxtBox.Name = "firstNameTxtBox";
             this.firstNameTxtBox.ReadOnly = true;
             this.firstNameTxtBox.Size = new System.Drawing.Size(188, 29);
             this.firstNameTxtBox.TabIndex = 11;
+            this.firstNameTxtBox.TextChanged += new System.EventHandler(this.checkTxtBoxSize);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(73, 39);
+            this.label1.Location = new System.Drawing.Point(73, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 24);
             this.label1.TabIndex = 10;
@@ -462,25 +488,16 @@
             this.dbConnectedPic.TabIndex = 2;
             this.dbConnectedPic.TabStop = false;
             // 
-            // workplaceAddBtn
+            // maxInputLbl
             // 
-            this.workplaceAddBtn.Location = new System.Drawing.Point(1095, 128);
-            this.workplaceAddBtn.Name = "workplaceAddBtn";
-            this.workplaceAddBtn.Size = new System.Drawing.Size(25, 31);
-            this.workplaceAddBtn.TabIndex = 31;
-            this.workplaceAddBtn.Text = "+";
-            this.workplaceAddBtn.UseVisualStyleBackColor = true;
-            this.workplaceAddBtn.Click += new System.EventHandler(this.workplaceAddBtn_Click);
-            // 
-            // uniAddBtn
-            // 
-            this.uniAddBtn.Location = new System.Drawing.Point(1095, 370);
-            this.uniAddBtn.Name = "uniAddBtn";
-            this.uniAddBtn.Size = new System.Drawing.Size(25, 31);
-            this.uniAddBtn.TabIndex = 32;
-            this.uniAddBtn.Text = "+";
-            this.uniAddBtn.UseVisualStyleBackColor = true;
-            this.uniAddBtn.Click += new System.EventHandler(this.uniAddBtn_Click);
+            this.maxInputLbl.AutoSize = true;
+            this.maxInputLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxInputLbl.ForeColor = System.Drawing.Color.Maroon;
+            this.maxInputLbl.Location = new System.Drawing.Point(178, 25);
+            this.maxInputLbl.Name = "maxInputLbl";
+            this.maxInputLbl.Size = new System.Drawing.Size(184, 12);
+            this.maxInputLbl.TabIndex = 26;
+            this.maxInputLbl.Text = "Maximum input for text box is 25 characters";
             // 
             // ProfileForm
             // 
@@ -550,5 +567,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button uniAddBtn;
         private System.Windows.Forms.Button workplaceAddBtn;
+        private System.Windows.Forms.Label maxInputLbl;
     }
 }
