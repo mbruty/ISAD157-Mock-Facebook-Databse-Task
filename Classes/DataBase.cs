@@ -478,7 +478,7 @@ namespace FacebookUI
                 try
                 {
                     //Get all of the user's 
-                    string query = "select * FROM Messages WHERE (senderID = @userID AND recipientID = @viewID) OR" +
+                    string query = "SELECT senderID, recipientID, sentTime, messageText, isRead FROM Messages WHERE (senderID = @userID AND recipientID = @viewID) OR" +
                         " (senderID = @viewID AND recipientID = @userID) ORDER BY sentTime;";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();

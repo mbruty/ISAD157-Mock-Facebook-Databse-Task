@@ -74,6 +74,10 @@ namespace FacebookUI
 
             Util.SetControlPropertyThreadSafe(relationshipTxtBox, "BackColor", SystemColors.Control);
             Util.SetControlPropertyThreadSafe(genderTxtBox, "BackColor", SystemColors.Control);
+            Util.SetControlPropertyThreadSafe(firstNameTxtBox, "BackColor", SystemColors.Control);
+            Util.SetControlPropertyThreadSafe(lastNameTxtBox, "BackColor", SystemColors.Control);
+            Util.SetControlPropertyThreadSafe(homeTownTxtBox, "BackColor", SystemColors.Control);
+            Util.SetControlPropertyThreadSafe(currentCityTxtBox, "BackColor", SystemColors.Control);
 
             Util.SetControlPropertyThreadSafe(saveChangesBtn, "Visible", false);
             Util.SetControlPropertyThreadSafe(addFriendBtn, "Visible", false);
@@ -110,6 +114,10 @@ namespace FacebookUI
 
             Util.SetControlPropertyThreadSafe(relationshipTxtBox, "BackColor", SystemColors.ControlLightLight);
             Util.SetControlPropertyThreadSafe(genderTxtBox, "BackColor", SystemColors.ControlLightLight);
+            Util.SetControlPropertyThreadSafe(firstNameTxtBox, "BackColor", SystemColors.ControlLightLight);
+            Util.SetControlPropertyThreadSafe(lastNameTxtBox, "BackColor", SystemColors.ControlLightLight);
+            Util.SetControlPropertyThreadSafe(homeTownTxtBox, "BackColor", SystemColors.ControlLightLight);
+            Util.SetControlPropertyThreadSafe(currentCityTxtBox, "BackColor", SystemColors.ControlLightLight);
 
             Util.SetControlPropertyThreadSafe(removeFriendBtn, "Visible", false);
             Util.SetControlPropertyThreadSafe(addFriendBtn, "Visible", false);
