@@ -89,6 +89,70 @@ namespace FacebookUI
             return null;
         }
 
+        public static async Task<bool> uploadNewWorkPlace(int userID, DateTime startDate, DateTime? endDate, string workplaceName)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    //Conditional insert where it only inserts IF the workplace isn't already there
+                    //2ND query inserts the new worker
+                    string query = "INSERT INTO workplaces(workplaceName)" +
+                        "SELECT @workplaceName FROM dual WHERE NOT EXISTS(SELECT workplaceName FROM workplaces WHERE workplaceName = @workplaceName);" + //End of query one
+                        "INSERT INTO Workers(userID, workplaceID, dateStarted, dateLeft) VALUES ("+
+                        "(SELECT userID FROM users WHERE userID = @userID),"+
+                        "(SELECT workplaceID FROM Workplaces WHERE workplaceName = @workplaceName)," +
+                        "@dateStarted, @dateLeft);"; 
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@workplaceName", Util.EscapeSql(workplaceName));
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@dateStarted", startDate);
+                    cmd.Parameters.AddWithValue("@dateLeft", endDate);
+
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return false;
+        }
+        public static async Task<bool> uploadNewUni(int userID, DateTime startDate, DateTime? endDate, string uniNmae)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    //Conditional insert where it only inserts IF the workplace isn't already there
+                    //2ND query inserts the new worker
+                    string query = "INSERT INTO universities(universityName)" +
+                        "SELECT @universityName FROM dual WHERE NOT EXISTS(SELECT universityName FROM universities WHERE universityName = @universityName);" + //End of query one
+                        "INSERT INTO students(userID, uniID, dateStarted, dateLeft) VALUES (" +
+                        "(SELECT userID FROM users WHERE userID = @userID)," +
+                        "(SELECT uniID FROM universities WHERE universityName = @universityName)," +
+                        "@dateStarted, @dateLeft);";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@universityName", Util.EscapeSql(uniNmae));
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@dateStarted", startDate);
+                    cmd.Parameters.AddWithValue("@dateLeft", endDate);
+
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return false;
+        }
         public static async Task<DataTable> getUniversities(int ID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
