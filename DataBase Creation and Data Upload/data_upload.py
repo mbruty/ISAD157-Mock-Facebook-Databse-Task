@@ -165,6 +165,8 @@ def rand_date(start, end, format, prop):
 async def do_work(q):
     while True:
         try:
+            if(q.qsize == 0):
+                break
             query = await q.get()
             cursor.execute(query)
             conn.commit()
