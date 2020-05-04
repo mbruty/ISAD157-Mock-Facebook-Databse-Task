@@ -5,7 +5,8 @@
 We have been given the task of designing a relational database from a Client-Like brief. The data had to be normalised to 3NF. UML diagrams were then created to plan the whole task, then the C# code was created from the UML diagrams. 
 
 ## Python Part:
-###### Note: No marks were available for the python part, it was just a fun side project that allowed me to upload the data a lot quicker than the 4-6 hours my course mates were reporting it was taking
+###### Note One: The python part is only submitted to have on my github and isn't submitted for marking
+###### Note Two: No marks were available for the python part, it was just a fun side project that allowed me to upload the data a lot quicker than the 4-6 hours my course mates were reporting it was taking
 ### JupyterNotebook
 This document contains the code that created the mock data that wasn't provided with the dataset. Each segment contains the code for uploading to each different table, along with the 'df.Head()' which shows the first 5 rows in the data frame. As this was un-parallelised it takes a while to upload as each part gets 'stuck' on sending the data to the database server. This took 2 hours and 1 minute to upload to  the database server.
 
