@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
@@ -34,7 +35,6 @@ namespace FacebookUI
                     new object[] { value });
             }
         }
-
         public static string UppercaseFirst(string s)
         {
             // Check for empty string.
