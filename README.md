@@ -2,7 +2,7 @@
 # Mock-Facebook-Databse-Task
 
 ## The Scenario
-We have been given the task of designing a relational database from a Client-Like brief. The data had to be normalised to 3NF. UML diagrams were then created to plan the whole task, then the C# code was created from the UML diagrams. 
+We have been given the task of designing a relational database from a Client-Like brief. The data had to be normalised to 3NF. UML diagrams were then created to plan the whole task, then the C# code was created from the UML diagrams.
 
 ## Python Part:
 ###### Note One: The python part is only submitted to have on my github and isn't submitted for marking
@@ -12,12 +12,12 @@ This document contains the code that created the mock data that wasn't provided 
 
 ### data_upload.py
 This document contains the full code for uploading to the database server. In it, I create a list the queries to send to the database. Once all the data has been placed in the list, it is placed in a queue that's waiting to be executed. 32 Threads are spawned and upload the data as fast as the server can accept it. This took 1 hour and 40 minutes to upload.
-###### Note: FOREIGN_KEY_CHECKS had to be turned off, as it's asynchronous there were rare cases where a piece of data was uploaded whilst it's foreign key was still in queue waiting to be uploaded. Generally this isn't a good idea, but as I konw the dataset is complete and not missing any entries, it's fine
+###### Note: FOREIGN_KEY_CHECKS had to be turned off, as it's asynchronous there were rare cases where a piece of data was uploaded whilst it's foreign key was still in queue waiting to be uploaded. Generally this isn't a good idea, but as I know the dataset is complete and not missing any entries, it's fine
 ## SQL Part
 This is just a document that contains the code for creating the table (and deleting the table, then re-creating it if you mess up).
 
 ## The C# part
-Firstly, all of the DataBase class has been made asynchronous. This is because everything is ran off of one main thread, unless you make it run with multiple threads. This results in the graphics thread being locked for the ~0.1 seconds it takes to query the database. Furthermore, if a connection cannot be established to the database, the whole program can lock up for the 30 seconds it takes for the connection to time out. This results in the program being more snappy, as it's still running whilst waiting on the data. The asynchronous programming was done by using the built-in Task\<T\> method. 
+Firstly, all of the DataBase class has been made asynchronous. This is because everything is ran off of one main thread, unless you make it run with multiple threads. This results in the graphics thread being locked for the ~0.1 seconds it takes to query the database. Furthermore, if a connection cannot be established to the database, the whole program can lock up for the 30 seconds it takes for the connection to time out. This results in the program being more snappy, as it's still running whilst waiting on the data. The asynchronous programming was done by using the built-in Task\<T\> method.
 
 In this assignment, no marks were available for the design of the UI. This is why it's vanilla WindowsForms without any custom Eye-Catching elements. If you want to see a task where UI was a focus, [look here](https://github.com/mbruty/AirBnb-DataVisualisation).
 

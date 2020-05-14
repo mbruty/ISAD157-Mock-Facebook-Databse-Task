@@ -22,7 +22,6 @@ namespace FacebookUI
                     DBConnect.USER_NAME + ";" + "PASSWORD=" +
                     DBConnect.PASSWORD + ";" + "SslMode=" +
                     DBConnect.SslMode + ";";
-        public static string errorMsg;
 
         public static async Task<List<String>> getUserProfile(int ID)
         {
@@ -137,6 +136,35 @@ namespace FacebookUI
             return null;
         }
 
+        public static async Task<DataTable> getUniversities(int ID)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT Universities.universityName AS \"University Name\", Students.dateStarted \"Date Started\", ifnull(Students.dateLeft, 'Present') AS \"Date Left\" From Students " +
+                        "INNER JOIN Universities ON Universities.uniID = Students.uniID WHERE userID = " + ID.ToString() + ";";
+                    if (con.State != System.Data.ConnectionState.Open)
+                        await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    MySqlDataAdapter sqlDA = new MySqlDataAdapter(cmd);
+                    DataTable uniTable = new DataTable("Universities Data");
+
+                    sqlDA.Fill(uniTable);
+                    return uniTable;
+                }
+                catch (MySqlException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return null;
+        }
+
         public static async Task<bool> uploadNewWorkPlace(int userID, DateTime startDate, DateTime? endDate, string workplaceName)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -150,7 +178,7 @@ namespace FacebookUI
                         "INSERT INTO Workers(userID, workplaceID, dateStarted, dateLeft) VALUES ("+
                         "(SELECT userID FROM users WHERE userID = @userID),"+
                         "(SELECT workplaceID FROM Workplaces WHERE workplaceName = @workplaceName)," +
-                        "@dateStarted, @dateLeft);"; 
+                        "@dateStarted, @dateLeft);";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
@@ -201,34 +229,6 @@ namespace FacebookUI
             }
             return false;
         }
-        public static async Task<DataTable> getUniversities(int ID)
-        {
-            using (MySqlConnection con = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    string query = "SELECT Universities.universityName AS \"University Name\", Students.dateStarted \"Date Started\", ifnull(Students.dateLeft, 'Present') AS \"Date Left\" From Students " +
-                        "INNER JOIN Universities ON Universities.uniID = Students.uniID WHERE userID = " + ID.ToString() + ";";
-                    if (con.State != System.Data.ConnectionState.Open)
-                        await con.OpenAsync();
-                    MySqlCommand cmd = new MySqlCommand(query, con);
-                    MySqlDataAdapter sqlDA = new MySqlDataAdapter(cmd);
-                    DataTable uniTable = new DataTable("Universities Data");
-
-                    sqlDA.Fill(uniTable);
-                    return uniTable;
-                }
-                catch (MySqlException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
-            return null;
-        }
 
         public static async Task<Boolean> updateUserInfo(String[] info, int userID)
         {
@@ -270,6 +270,7 @@ namespace FacebookUI
             return false;
         }
 
+        //Even though this will only ever get numbers, the result will only ever be used as a String, so no point converting to Integer, then converting back to string
         public static async Task<String> getNumFriends(int userID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -302,7 +303,7 @@ namespace FacebookUI
             {
                 try
                 {
-                    //Get all of the user's 
+                    //Get all of the user's
                     string query = "SELECT users.firstName AS 'First Name', users.lastName AS 'Last Name', users.userID AS 'User ID' FROM users " +
                         "INNER JOIN friendships ON friendships.userID_2 = users.userID WHERE friendships.userID_1=@userID AND isAccepted=@true;";
                     if (con.State != System.Data.ConnectionState.Open)
@@ -378,7 +379,7 @@ namespace FacebookUI
             {
                 try
                 {
-                    string query = "INSERT INTO friendships(userID_1, userID_2, isAccepted) VALUES ((SELECT userID FROM Users WHERE userID=@userID), (SELECT userID FROM Users WHERE userID=@friendID), @true);" + 
+                    string query = "INSERT INTO friendships(userID_1, userID_2, isAccepted) VALUES ((SELECT userID FROM Users WHERE userID=@userID), (SELECT userID FROM Users WHERE userID=@friendID), @true);" +
                         "UPDATE friendships SET isAccepted=@true WHERE userID_1=@friendID AND userID_2=@userID";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();
@@ -429,7 +430,7 @@ namespace FacebookUI
                 {
 
                     string query = "SELECT users.firstName AS 'First Name', users.lastName AS 'Last Name', users.userID AS 'User ID' FROM users " +
-                        "INNER JOIN friendships ON friendships.userID_1 = users.userID WHERE friendships.userID_2 =" + userID + " AND isAccepted =" + false + ";"; 
+                        "INNER JOIN friendships ON friendships.userID_1 = users.userID WHERE friendships.userID_2 =" + userID + " AND isAccepted =" + false + ";";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();
                     MySqlCommand cmd = new MySqlCommand(query, con);
@@ -446,6 +447,34 @@ namespace FacebookUI
             }
             return null;
         }
+
+        public static async Task<bool> areFriends(int id1, int id2)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT EXISTS(SELECT * FROM friendships WHERE userID_1=@user1 AND userID_2=@user2 AND isAccepted=@true);";
+                    //await con.OpenAsync();
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@user1", id1);
+                    cmd.Parameters.AddWithValue("@user2", id2);
+                    cmd.Parameters.AddWithValue("@true", true);
+
+                    await con.OpenAsync();
+                    var reader = cmd.ExecuteReader();
+                    reader.Read();
+                    return reader.GetBoolean(0);
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            return false;
+        }
+        
         public static async Task<String> getProfiles(string userIDs)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -477,7 +506,7 @@ namespace FacebookUI
             {
                 try
                 {
-                    //Get all of the user's 
+                    //Get all of the user's
                     string query = "SELECT senderID, recipientID, sentTime, messageText, isRead FROM Messages WHERE (senderID = @userID AND recipientID = @viewID) OR" +
                         " (senderID = @viewID AND recipientID = @userID) ORDER BY sentTime;";
                     if (con.State != System.Data.ConnectionState.Open)
@@ -565,7 +594,7 @@ namespace FacebookUI
             {
                 try
                 {
-                    //Get all of the user's 
+                    //Get all of the user's
                     string query = "SELECT users.firstName, users.lastName, messages.messageText, messages.senderID FROM messages INNER JOIN users ON messages.senderID = users.userID WHERE messages.recipientID=@userID AND messages.isRead=@false GROUP BY messages.senderID;";
                     if (con.State != System.Data.ConnectionState.Open)
                         await con.OpenAsync();
@@ -637,32 +666,6 @@ namespace FacebookUI
             return null;
         }
 
-        public static async Task<bool> areFriends(int id1, int id2)
-        {
-            using (MySqlConnection con = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    string query = "SELECT EXISTS(SELECT * FROM friendships WHERE userID_1=@user1 AND userID_2=@user2 AND isAccepted=@true);";
-                    //await con.OpenAsync();
-                    MySqlCommand cmd = new MySqlCommand(query, con);
-                    cmd.Parameters.AddWithValue("@user1", id1); 
-                    cmd.Parameters.AddWithValue("@user2", id2);
-                    cmd.Parameters.AddWithValue("@true", true);
-
-                    await con.OpenAsync();
-                    var reader = cmd.ExecuteReader();
-                    reader.Read();
-                    return reader.GetBoolean(0);
-
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
-            return false;
-        }
         public static async Task<bool> sendMessage(string text, int userID, string viewID)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -672,7 +675,7 @@ namespace FacebookUI
                     string query = "INSERT INTO Messages(senderID, recipientID, sentTime, messageText, isRead) VALUES";
                     string last = viewID.Split(',').Last();
                     text = Util.EscapeSql(text);
-                    foreach (string recipient in viewID.Split(',')) 
+                    foreach (string recipient in viewID.Split(','))
                     {
                         query += "((SELECT userID FROM users WHERE userID=" + userID + "),(SELECT userID FROM users WHERE userID=" + recipient + "), CURRENT_TIMESTAMP(), '" + text +"',"+false+")";
                         if (recipient != last)
@@ -733,8 +736,7 @@ namespace FacebookUI
                 {
                     if (e.Number == 1042)
                     {
-                        errorMsg = "Could not connect to databse";
-                        DialogResult dialogResult = MessageBox.Show(errorMsg, "ERROR 1042", MessageBoxButtons.RetryCancel);
+                        DialogResult dialogResult = MessageBox.Show("Could not connect to databse", "ERROR 1042", MessageBoxButtons.RetryCancel);
                         if (dialogResult == DialogResult.Retry)
                             return await testConnection();
                         else
@@ -742,8 +744,7 @@ namespace FacebookUI
                     }
                     else if (e.Number == 0)
                     {
-                        errorMsg = "Databse access denied";
-                        DialogResult dialogResult = MessageBox.Show(errorMsg, "ERROR 0", MessageBoxButtons.RetryCancel);
+                        DialogResult dialogResult = MessageBox.Show("Databse access denied", "ERROR 0", MessageBoxButtons.RetryCancel);
                         if (dialogResult == DialogResult.Retry)
                             return await testConnection();
                         else

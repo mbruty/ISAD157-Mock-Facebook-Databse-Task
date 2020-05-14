@@ -12,8 +12,8 @@ namespace FacebookUI.Forms.Friend_Forms
 {
     public partial class DateEntry : Form
     {
-        int userID;
-        bool endDatePicked = false;
+        private int userID;
+        private bool endDatePicked = false;
         public EventHandler submitted;
         public DateEntry(string lblTxt, int userID)
         {

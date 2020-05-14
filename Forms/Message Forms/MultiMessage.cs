@@ -11,8 +11,8 @@ namespace FacebookUI.Forms
 {
     class MultiMessage : MessageForm
     {
-        private string userIDs;
-        private int userID;
+        private string recipientIDs;
+        private new int userID;
         private DataTable dataTable;
         public MultiMessage(int userID) : base()
         {
@@ -42,12 +42,12 @@ namespace FacebookUI.Forms
             {
                 Task.Run(async () =>
                 {
-                    return await DataBase.sendMessage(text, this.userID, this.userIDs);
+                    return await DataBase.sendMessage(text, this.userID, this.recipientIDs);
                 }).ContinueWith((reult) =>
                 {
                     if (reult.Result)
                     {
-                        base.messageDGV.Rows.Add(this.userIDs, text);
+                        base.messageDGV.Rows.Add(this.recipientIDs, text);
                     }
                     else
                     {
@@ -70,19 +70,19 @@ namespace FacebookUI.Forms
         {
             if(multiMsgBtn.Text == "Reset Users")
             {
-                base.toTxtBox.Text = userIDs;
+                base.toTxtBox.Text = recipientIDs;
                 base.multiMsgBtn.Text = "Set Users";
             }
             else
             {
                 if (toTxtBox.Text.Contains(","))
                 {
-                    this.userIDs = toTxtBox.Text;
+                    this.recipientIDs = toTxtBox.Text;
                     base.multiMsgBtn.Text = "Reset Users";
                     base.toTxtBox.Text = "";
                     Task.Run(async () =>
                     {
-                        return await DataBase.getProfiles(this.userIDs);
+                        return await DataBase.getProfiles(this.recipientIDs);
                     }).ContinueWith((result) =>
                     {
                         Util.SetControlPropertyThreadSafe(base.toTxtBox, "Text", result.Result);

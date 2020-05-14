@@ -14,18 +14,18 @@ namespace FacebookUI
 {
     public partial class MessageForm : Form
     {
-        protected int userID, viewID;
+        protected int userID, recipientID;
         private string viewName;
 
         public MessageForm()
         {
             InitializeComponent();
         }
-        public MessageForm(int userID, int viewID, string viewName)
+        public MessageForm(int userID, int recipientID, string viewName)
         {
             InitializeComponent();
             this.userID = userID;
-            this.viewID = viewID;
+            this.recipientID = recipientID;
             this.viewName = viewName;
             this.toTxtBox.Text = viewName;
         }
@@ -34,9 +34,9 @@ namespace FacebookUI
         {
             Task.Run(async () =>
             {
-                return await DataBase.getMessages(this.userID, this.viewID);
-            }).ContinueWith((result) => 
-            { 
+                return await DataBase.getMessages(this.userID, this.recipientID);
+            }).ContinueWith((result) =>
+            {
                 Util.SetControlPropertyThreadSafe(messageDGV, "DataSource", result.Result);
             });
         }
@@ -59,7 +59,7 @@ namespace FacebookUI
             {
                 Task.Run(async () =>
                 {
-                    return await DataBase.sendMessage(text, this.userID, viewID.ToString());
+                    return await DataBase.sendMessage(text, this.userID, recipientID.ToString());
                 }).ContinueWith(async (reult) =>
                 {
                     if (reult.Result)
@@ -82,7 +82,7 @@ namespace FacebookUI
             }
         }
 
-        virtual protected void multiMsgBtn_Click(object sender, EventArgs e)
+        protected virtual void multiMsgBtn_Click(object sender, EventArgs e)
         {
             MultiMessage m = new MultiMessage(this.userID);
             m.Show();
@@ -93,7 +93,7 @@ namespace FacebookUI
         {
             Task.Run(async () =>
             {
-                await DataBase.setRead(this.userID, this.viewID);
+                await DataBase.setRead(this.userID, this.recipientID);
             }).ContinueWith((_) => { populateData(); });
         }
 
