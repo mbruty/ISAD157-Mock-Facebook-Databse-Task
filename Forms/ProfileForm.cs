@@ -24,8 +24,8 @@ namespace FacebookUI
         private Dictionary<String, String> gender, relationship;
         public EventHandler logOut;
         private FriendsForm friends;
-        private ProfilePicker profilePick;
-        private DateEntry dateEntry;
+        private ProfilePicker p;
+        private DateEntry de;
         private bool viewingOwnProfile = true;
         //Logged in as admin
         public ProfileForm()
@@ -141,7 +141,7 @@ namespace FacebookUI
                 fillProfileData(await DataBase.getUserProfile(userID));
             }).ConfigureAwait(true);
 
-            Task.Run(async () =>
+            Task.Run(async () => 
             {
                 DataTable result = await DataBase.getWorkplaces(userID);
                 try
@@ -333,16 +333,16 @@ namespace FacebookUI
                 }
                 else
                 {
-                    profilePick = new ProfilePicker(result);
-                    profilePick.Show();
-                    profilePick.profilePicked += profilePicked;
+                    p = new ProfilePicker(result);
+                    p.Show();
+                    p.profilePicked += profilePicked;
                 }
             }
         }
         private void profilePicked(object sender, EventArgs e)
         {
-            fillData(profilePick.getID());
-            profilePick.Dispose();
+            fillData(p.getID());
+            p.Dispose();
         }
         private void searchBtn_Click(object sender, EventArgs e)
         {
@@ -405,19 +405,19 @@ namespace FacebookUI
 
         private void workplaceAddBtn_Click(object sender, EventArgs e)
         {
-            if (dateEntry != null)
-                dateEntry.Dispose();
-            dateEntry = new DateEntry("Workplace Name", this.userID);
-            dateEntry.Show();
-            dateEntry.submitted += updateInfo;
+            if (de != null)
+                de.Dispose();
+            de = new DateEntry("Workplace Name", this.userID);
+            de.Show();
+            de.submitted += updateInfo;
         }
         private void uniAddBtn_Click(object sender, EventArgs e)
         {
-            if (dateEntry != null)
-                dateEntry.Dispose();
-            dateEntry = new DateEntry("University Name", this.userID);
-            dateEntry.Show();
-            dateEntry.submitted += updateInfo;
+            if (de != null)
+                de.Dispose();
+            de = new DateEntry("University Name", this.userID);
+            de.Show();
+            de.submitted += updateInfo;
         }
         private void updateInfo(object sender, EventArgs e)
         {

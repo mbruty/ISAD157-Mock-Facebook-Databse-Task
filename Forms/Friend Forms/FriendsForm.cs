@@ -66,7 +66,7 @@ namespace FacebookUI
         {
             viewBtnClick(sender, e);
         }
-        //Needed so that it can be overwritten
+
         protected virtual void msgBtn_Click(object sender, EventArgs e)
         {
 

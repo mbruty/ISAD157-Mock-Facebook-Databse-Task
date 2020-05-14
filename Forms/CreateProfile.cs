@@ -80,6 +80,7 @@ namespace FacebookUI.Forms
                         if (result.Result != 0)
                         {
                             this.userID = result.Result;
+                            MessageBox.Show("User ID : " + this.userID.ToString());
                             created(this, EventArgs.Empty);
                         }
                         else

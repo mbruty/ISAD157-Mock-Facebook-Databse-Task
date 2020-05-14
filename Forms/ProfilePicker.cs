@@ -13,7 +13,7 @@ namespace FacebookUI
     public partial class ProfilePicker : Form
     {
         private List<String[]> profiles;
-        public EventHandler profilePicked;
+        public EventHandler profilePicked, formStarted;
         public ProfilePicker(List<String[]> input)
         {
             InitializeComponent();
