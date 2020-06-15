@@ -1,6 +1,12 @@
 
 # Mock-Facebook-Databse-Task
 
+##Post grading update:
+Final grade: 92%
+###Possible improvments
+In database design, I missed that workplace <-> worker and university <-> student relationships were many to man.
+Assumtions should have been more clear
+
 ## The Scenario
 We have been given the task of designing a relational database from a Client-Like brief. The data had to be normalised to 3NF. UML diagrams were then created to plan the whole task, then the C# code was created from the UML diagrams.
 
