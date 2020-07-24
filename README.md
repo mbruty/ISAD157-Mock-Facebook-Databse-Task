@@ -30,5 +30,3 @@ In this assignment, no marks were available for the design of the UI. This is wh
 UI considerations - input-validation has been implemented for message text, user gender and user relationship status. The text box turns red when the data is breaking a constraint and goes back to normal once it's correct. Text boxes are displayed greyed-out when it's read-only. Text is large enough so that it is readable by most users. The only possible accessibility problem is when a text box turns red, if a user has protanopia, the red-colour might appear slightly greyed-out leading them to believe that the text-box is in read-only mode. However, as said earlier, this assignment focuses on other aspects of programming, thus this is more than what was required.
 #### Self-lead-learning
 To obtain the highest marks within this assignment, I had to under-take significant self lead learning. The elements that contain this are the Asynchronous programming within the DataBase Class and Inheritance within the FriendRequest and MultiMeassage Forms. There are also some more-complex SQL queries within the DataBase Class which we have not covered within lectures.
-
-## The Graphs
